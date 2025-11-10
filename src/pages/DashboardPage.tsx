@@ -80,25 +80,25 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header com ações */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-900">Dashboard</h1>
-          <p className="text-neutral-600 mt-1">Visão geral da sua clínica de estética</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white">Dashboard</h1>
+          <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 mt-1">Visão geral da sua clínica de estética</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           <button
             onClick={() => navigate('/analises')}
-            className="flex items-center gap-2 px-5 py-3 bg-white border-2 border-purple-600 text-purple-600 hover:bg-purple-50 rounded-xl transition-all font-semibold shadow-sm"
+            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white dark:bg-neutral-800 border-2 border-purple-600 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl transition-all font-semibold shadow-sm text-sm sm:text-base"
           >
-            <BarChart3 className="w-5 h-5" />
-            Análises/Relatórios
+            <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="whitespace-nowrap">Análises/Relatórios</span>
           </button>
           <button
             onClick={() => navigate('/gravacoes')}
-            className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white rounded-xl transition-all font-semibold shadow-lg shadow-rose-600/40"
+            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white rounded-xl transition-all font-semibold shadow-lg shadow-rose-600/40 text-sm sm:text-base"
           >
-            <Mic className="w-5 h-5" />
-            Nova Gravação
+            <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="whitespace-nowrap">Nova Gravação</span>
           </button>
         </div>
       </div>
@@ -110,24 +110,24 @@ export default function DashboardPage() {
             <Brain className="w-6 h-6" />
             Análises com IA
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <p className="text-purple-200 text-sm mb-1">Total de Análises</p>
-              <p className="text-3xl font-bold">{analysisMetrics.total_analyses}</p>
+              <p className="text-purple-200 text-xs sm:text-sm mb-1">Total de Análises</p>
+              <p className="text-2xl sm:text-3xl font-bold">{analysisMetrics.total_analyses}</p>
               <p className="text-purple-200 text-xs mt-1">
                 {analysisMetrics.analyses_this_week} esta semana
               </p>
             </div>
             <div>
-              <p className="text-purple-200 text-sm mb-1">Taxa de Conversão</p>
-              <p className="text-3xl font-bold">{analysisMetrics.conversion_rate.toFixed(1)}%</p>
+              <p className="text-purple-200 text-xs sm:text-sm mb-1">Taxa de Conversão</p>
+              <p className="text-2xl sm:text-3xl font-bold">{analysisMetrics.conversion_rate.toFixed(1)}%</p>
               <p className="text-purple-200 text-xs mt-1">
                 {analysisMetrics.performance_analyses} análises
               </p>
             </div>
             <div>
-              <p className="text-purple-200 text-sm mb-1">Receita Total</p>
-              <p className="text-3xl font-bold">
+              <p className="text-purple-200 text-xs sm:text-sm mb-1">Receita Total</p>
+              <p className="text-2xl sm:text-3xl font-bold">
                 R$ {analysisMetrics.total_revenue.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
               </p>
               <p className="text-purple-200 text-xs mt-1">
@@ -135,7 +135,7 @@ export default function DashboardPage() {
               </p>
             </div>
             <div>
-              <p className="text-purple-200 text-sm mb-1">Perfil Mais Frequente</p>
+              <p className="text-purple-200 text-xs sm:text-sm mb-1">Perfil Mais Frequente</p>
               <div className="mt-2">
                 <ProfileBadge profile={analysisMetrics.most_frequent_profile} size="md" />
               </div>
@@ -148,7 +148,7 @@ export default function DashboardPage() {
       )}
 
       {/* KPIs Grid - Métricas Essenciais */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <KPICard
           title="Taxa de Conversão"
           value={`${oldMetrics.conversionRate.toFixed(1)}%`}
@@ -167,7 +167,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Status Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <StatusCard
           title="Análises com IA"
           value={analysisMetrics?.total_analyses || 0}
@@ -287,7 +287,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Ações Rápidas Grid - Foco em Estética Médica */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <QuickActionCard
           title="Análises com IA"
           description="Visualizar e criar análises de consultas com inteligência artificial"
@@ -331,22 +331,22 @@ function KPICard({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`p-3 ${colorClasses[color]} rounded-lg shadow-lg`}>
-          <Icon className="w-6 h-6 text-white" />
+    <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-700 p-4 sm:p-6 hover:shadow-md transition-shadow">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <div className={`p-2 sm:p-3 ${colorClasses[color]} rounded-lg shadow-lg`}>
+          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
         </div>
         {trend && (
-          <div className={`flex items-center gap-1 text-xs font-medium ${trendUp !== undefined ? (trendUp ? 'text-success-600' : 'text-error-500') : 'text-neutral-500'}`}>
+          <div className={`flex items-center gap-1 text-xs font-medium ${trendUp !== undefined ? (trendUp ? 'text-success-600' : 'text-error-500') : 'text-neutral-500 dark:text-neutral-400'}`}>
             {trendUp !== undefined && (
-              <ArrowUpRight className={`w-3.5 h-3.5 ${!trendUp && 'rotate-90'}`} />
+              <ArrowUpRight className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${!trendUp && 'rotate-90'}`} />
             )}
-            {trend}
+            <span className="hidden sm:inline">{trend}</span>
           </div>
         )}
       </div>
-      <h3 className="text-sm font-medium text-neutral-600 mb-1">{title}</h3>
-      <p className="text-3xl font-bold text-neutral-900">{value}</p>
+      <h3 className="text-xs sm:text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1">{title}</h3>
+      <p className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white">{value}</p>
     </div>
   )
 }
@@ -368,15 +368,15 @@ function StatusCard({
   iconColor: string
 }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-4">
-        <div className={`p-3 ${iconBg} rounded-lg`}>
-          <Icon className={`w-6 h-6 ${iconColor}`} />
+    <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-700 p-4 sm:p-6 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-3 sm:mb-4">
+        <div className={`p-2 sm:p-3 ${iconBg} dark:opacity-90 rounded-lg`}>
+          <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${iconColor}`} />
         </div>
       </div>
-      <h3 className="text-sm font-medium text-neutral-600 mb-1">{title}</h3>
-      <p className="text-3xl font-bold text-neutral-900 mb-2">{value}</p>
-      <p className="text-sm text-neutral-500">{description}</p>
+      <h3 className="text-xs sm:text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1">{title}</h3>
+      <p className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white mb-2">{value}</p>
+      <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">{description}</p>
     </div>
   )
 }
@@ -398,15 +398,15 @@ function QuickActionCard({
   return (
     <button
       onClick={onClick}
-      className="group relative bg-white rounded-xl shadow-sm border border-neutral-200 p-6 text-left hover:shadow-lg transition-all overflow-hidden"
+      className="group relative bg-white dark:bg-neutral-800 rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-700 p-4 sm:p-6 text-left hover:shadow-lg transition-all overflow-hidden"
     >
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity`} />
       <div className="relative">
-        <div className={`inline-flex p-3 bg-gradient-to-br ${gradient} rounded-lg shadow-lg mb-4 group-hover:scale-110 transition-transform`}>
-          <Icon className="w-6 h-6 text-white" />
+        <div className={`inline-flex p-2 sm:p-3 bg-gradient-to-br ${gradient} rounded-lg shadow-lg mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
+          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
         </div>
-        <h3 className="font-semibold text-neutral-900 mb-2 text-lg">{title}</h3>
-        <p className="text-sm text-neutral-600">{description}</p>
+        <h3 className="font-semibold text-neutral-900 dark:text-white mb-2 text-base sm:text-lg">{title}</h3>
+        <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">{description}</p>
       </div>
     </button>
   )

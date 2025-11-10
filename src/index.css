@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --radius: 0.5rem;
-    
+
     /* Light mode colors */
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -26,7 +26,7 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 200 98% 39%;
-    
+
     /* Sidebar variables */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -36,6 +36,13 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Improve touch targets for mobile */
+  @media (hover: none) and (pointer: coarse) {
+    button, a, input, select, textarea {
+      min-height: 44px;
+    }
   }
 
   .dark {
@@ -74,9 +81,28 @@
   * {
     @apply border-border;
   }
-  
+
   body {
     @apply bg-neutral-50 dark:bg-neutral-900 text-foreground transition-colors;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better mobile input experience */
+  input, textarea, select {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  @media (min-width: 640px) {
+    input, textarea, select {
+      font-size: 0.875rem; /* sm:text-sm */
+    }
   }
 }
 
@@ -86,4 +112,39 @@ img {
 
 .fixed {
   position: fixed;
+}
+
+/* Improve scrollbar on mobile */
+@media (max-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Prevent text selection on interactive elements */
+button, a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Safe area insets for iOS notch */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
 }

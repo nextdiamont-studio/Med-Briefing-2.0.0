@@ -5,6 +5,7 @@ import {
   Settings,
   Brain,
   Sparkles,
+  X,
 } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 import { useEffect, useState } from 'react'
@@ -20,7 +21,11 @@ const clinicNavigation = [
   { name: 'Análises', href: '/analises', icon: Brain },
 ]
 
-export default function Sidebar() {
+interface SidebarProps {
+  onCloseMobile?: () => void
+}
+
+export default function Sidebar({ onCloseMobile }: SidebarProps) {
   const { user } = useAuth()
   const [userName, setUserName] = useState<string>('')
   const [userAvatar, setUserAvatar] = useState<string | null>(null)
@@ -50,17 +55,29 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="w-64 bg-neutral-800 flex flex-col h-screen shadow-xl">
+    <div className="w-64 bg-neutral-800 dark:bg-neutral-900 flex flex-col h-screen shadow-xl">
       {/* Logo e nome */}
-      <div className="p-6 border-b border-neutral-700 bg-gradient-to-br from-neutral-800 to-neutral-900">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-600 rounded-lg flex items-center justify-center shadow-lg">
-            <Sparkles className="w-6 h-6 text-white" />
+      <div className="p-4 sm:p-6 border-b border-neutral-700 bg-gradient-to-br from-neutral-800 to-neutral-900">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-rose-500 to-pink-600 rounded-lg flex items-center justify-center shadow-lg">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-lg sm:text-xl font-bold text-white">Med Briefing</h1>
+              <p className="text-xs text-rose-300">Estética IA</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-white">Med Briefing</h1>
-            <p className="text-xs text-rose-300">Estética IA</p>
-          </div>
+          {/* Close button for mobile */}
+          {onCloseMobile && (
+            <button
+              onClick={onCloseMobile}
+              className="lg:hidden p-1 text-neutral-400 hover:text-white hover:bg-neutral-700 rounded transition-colors"
+              aria-label="Fechar menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -77,6 +94,7 @@ export default function Sidebar() {
                 key={item.name}
                 to={item.href}
                 end
+                onClick={onCloseMobile}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive
@@ -102,6 +120,7 @@ export default function Sidebar() {
               <NavLink
                 key={item.name}
                 to={item.href}
+                onClick={onCloseMobile}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive
@@ -124,6 +143,7 @@ export default function Sidebar() {
         <div className="p-4">
           <NavLink
             to="/configuracoes"
+            onClick={onCloseMobile}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                 isActive
