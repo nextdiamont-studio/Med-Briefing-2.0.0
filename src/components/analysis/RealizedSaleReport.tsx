@@ -17,23 +17,25 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
   return (
     <div className="space-y-6 print:space-y-4">
       {/* Header */}
-      <div className={`text-white p-8 rounded-lg shadow-lg print:bg-green-700 ${
+      <div className={`text-white p-8 rounded-lg border-l-4 print:bg-green-700 ${
         isLowQuality
-          ? 'bg-gradient-to-r from-orange-600 to-orange-700'
-          : 'bg-gradient-to-r from-green-600 to-green-700'
+          ? 'bg-orange-600 border-orange-800'
+          : 'bg-green-600 border-green-800'
       }`}>
-        <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
-          {isLowQuality ? (
-            <>
-              <AlertCircle className="w-8 h-8" />
-              Venda Realizada - Baixa Qualidade
-            </>
-          ) : (
-            <>
-              <CheckCircle className="w-8 h-8" />
-              Venda Realizada
-            </>
-          )}
+        <div className="flex items-center justify-between mb-4">
+          <div className="inline-block px-4 py-1 bg-white bg-opacity-20 rounded-full text-sm font-semibold">
+            RELATÓRIO DE PERFORMANCE
+          </div>
+          <div className={`inline-block px-4 py-1 rounded-full text-sm font-bold ${
+            isLowQuality ? 'bg-orange-800' : 'bg-green-800'
+          }`}>
+            {isLowQuality ? 'VENDA PERDIDA' : 'VENDA REALIZADA'}
+          </div>
+        </div>
+        <h1 className="text-3xl font-bold mb-2">
+          {isLowQuality
+            ? 'Venda Realizada - Baixa Qualidade'
+            : 'Venda Realizada'}
         </h1>
         <p className={isLowQuality ? 'text-orange-100' : 'text-green-100'}>
           {isLowQuality
@@ -49,23 +51,28 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
 
       {/* Low Quality Warning */}
       {isLowQuality && (
-        <Section title="⚠️ Alerta de Venda de Baixa Qualidade" variant="warning">
-          <div className="space-y-3">
-            <p className="text-gray-800 dark:text-gray-200 font-medium">
+        <Section title="Alerta de Venda de Baixa Qualidade" variant="warning">
+          <div className="space-y-4">
+            <p className="text-gray-800 dark:text-gray-200 font-medium leading-relaxed">
               Esta venda foi fechada, mas a análise indica que foi por pressão e não por construção
               de valor genuíno. Isso representa alto risco de:
             </p>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
-              <li>Cancelamento do procedimento</li>
-              <li>No-show (não comparecimento)</li>
-              <li>Arrependimento do cliente</li>
-              <li>Avaliações negativas</li>
-              <li>Falta de indicações futuras</li>
+            <ul className="list-none space-y-2 text-gray-700 dark:text-gray-300 pl-4 border-l-2 border-orange-300">
+              <li className="pl-2">Cancelamento do procedimento</li>
+              <li className="pl-2">No-show (não comparecimento)</li>
+              <li className="pl-2">Arrependimento do cliente</li>
+              <li className="pl-2">Avaliações negativas</li>
+              <li className="pl-2">Falta de indicações futuras</li>
             </ul>
-            <p className="text-orange-800 dark:text-orange-200 font-semibold mt-4">
-              ⚡ Ação recomendada: Aplicar as estratégias de correção imediatamente para melhorar
-              a experiência do paciente e reduzir o risco de cancelamento.
-            </p>
+            <div className="bg-orange-50 dark:bg-orange-950 border border-orange-200 dark:border-orange-800 rounded-lg p-4 mt-4">
+              <p className="text-orange-900 dark:text-orange-100 font-semibold">
+                Ação Recomendada
+              </p>
+              <p className="text-orange-800 dark:text-orange-200 mt-2 leading-relaxed">
+                Aplicar as estratégias de correção imediatamente para melhorar
+                a experiência do paciente e reduzir o risco de cancelamento.
+              </p>
+            </div>
           </div>
         </Section>
       )}
@@ -73,14 +80,14 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
       {/* Overall Performance */}
       <Section title="Performance Geral" variant={isLowQuality ? 'warning' : 'success'}>
         <ScoreDisplay
-          score={analysis.overall_performance.score}
-          maxScore={160}
-          rating={analysis.overall_performance.rating}
-          label="Pontuação Total (16 Passos × 10 Pontos)"
+          score={analysis.overall_performance?.score || 0}
+          maxScore={150}
+          rating={analysis.overall_performance?.rating || 'Bom'}
+          label="Pontuação Total (15 Etapas × 10 Pontos)"
           size="lg"
         />
         <p className="text-gray-700 dark:text-gray-300 mt-4 leading-relaxed">
-          {analysis.overall_performance.summary}
+          {analysis.overall_performance?.summary || 'Análise concluída com sucesso.'}
         </p>
       </Section>
 
@@ -135,7 +142,7 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="text-center p-4 bg-emerald-50 dark:bg-emerald-950 rounded-lg">
                 <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
-                  {analysis.lost_sale_details.error_pattern.excellent}
+                  {analysis.lost_sale_details?.error_pattern?.excellent || 0}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Passos Excelentes
@@ -144,7 +151,7 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
 
               <div className="text-center p-4 bg-green-50 dark:bg-green-950 rounded-lg">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-                  {analysis.lost_sale_details.error_pattern.good}
+                  {analysis.lost_sale_details?.error_pattern?.good || 0}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Passos Bons
@@ -153,7 +160,7 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
 
               <div className="text-center p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
                 <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
-                  {analysis.lost_sale_details.error_pattern.deficient}
+                  {analysis.lost_sale_details?.error_pattern?.deficient || 0}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Passos Deficientes
@@ -162,7 +169,7 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
 
               <div className="text-center p-4 bg-red-50 dark:bg-red-950 rounded-lg">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400">
-                  {analysis.lost_sale_details.error_pattern.critical}
+                  {analysis.lost_sale_details?.error_pattern?.critical || 0}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Passos Críticos
@@ -197,24 +204,24 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
           {/* Correction Strategy for Low Quality Sales */}
           <Section title="Estratégia de Correção Imediata" variant="warning">
             <div className="space-y-6">
-              <div className="bg-orange-50 dark:bg-orange-950 border border-orange-300 dark:border-orange-800 rounded-lg p-4">
-                <h5 className="font-bold text-orange-900 dark:text-orange-100 mb-3">
-                  🎯 Ações Imediatas para Salvar Esta Venda
+              <div className="bg-orange-50 dark:bg-orange-950 border border-orange-300 dark:border-orange-800 rounded-lg p-5">
+                <h5 className="font-bold text-orange-900 dark:text-orange-100 mb-3 text-lg">
+                  Ações Imediatas para Salvar Esta Venda
                 </h5>
-                <p className="text-gray-800 dark:text-gray-200 mb-4">
+                <p className="text-gray-800 dark:text-gray-200 mb-4 leading-relaxed">
                   {analysis.lost_sale_details.correction_strategy.immediate_focus.description}
                 </p>
 
-                <h6 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  Scripts de Follow-up:
+                <h6 className="font-semibold text-gray-900 dark:text-white mb-3 text-base">
+                  Scripts de Follow-up
                 </h6>
                 <div className="space-y-3">
                   {analysis.lost_sale_details.correction_strategy.immediate_focus.training_scripts.map((script) => (
-                    <div key={script.id} className="bg-white dark:bg-gray-900 border border-orange-200 dark:border-orange-800 rounded p-3">
-                      <h6 className="font-bold text-orange-900 dark:text-orange-100 mb-2">
+                    <div key={script.id} className="bg-white dark:bg-gray-900 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+                      <h6 className="font-bold text-orange-900 dark:text-orange-100 mb-3">
                         {script.script_title}
                       </h6>
-                      <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono">
+                      <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-sans leading-relaxed">
                         {script.script_content}
                       </pre>
                     </div>
@@ -222,11 +229,11 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
                 </div>
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-950 border border-blue-300 dark:border-blue-800 rounded-lg p-4">
-                <h5 className="font-bold text-blue-900 dark:text-blue-100 mb-3">
-                  📞 Para Próximas Consultas
+              <div className="bg-blue-50 dark:bg-blue-950 border border-blue-300 dark:border-blue-800 rounded-lg p-5">
+                <h5 className="font-bold text-blue-900 dark:text-blue-100 mb-3 text-lg">
+                  Para Próximas Consultas
                 </h5>
-                <p className="text-gray-800 dark:text-gray-200">
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
                   {analysis.lost_sale_details.correction_strategy.next_call_focus.description}
                 </p>
               </div>
@@ -235,21 +242,21 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
 
           {/* Behavioral Report */}
           <Section title="Relatório Comportamental" variant="warning">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                <h5 className="font-bold text-red-900 dark:text-red-100 mb-3">
-                  ❌ Abordagem Utilizada (Pressão)
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-5">
+                <h5 className="font-bold text-red-900 dark:text-red-100 mb-3 text-base">
+                  Abordagem Utilizada (Pressão)
                 </h5>
-                <p className="text-gray-800 dark:text-gray-200 text-sm leading-relaxed">
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
                   {analysis.lost_sale_details.behavioral_report.how_doctor_sold}
                 </p>
               </div>
 
-              <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                <h5 className="font-bold text-green-900 dark:text-green-100 mb-3">
-                  ✅ Abordagem Ideal (Valor)
+              <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-5">
+                <h5 className="font-bold text-green-900 dark:text-green-100 mb-3 text-base">
+                  Abordagem Ideal (Valor)
                 </h5>
-                <p className="text-gray-800 dark:text-gray-200 text-sm leading-relaxed">
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
                   {analysis.lost_sale_details.behavioral_report.how_should_sell_to_profile}
                 </p>
               </div>
@@ -259,11 +266,13 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
       )}
 
       {/* Behavioral Profile */}
-      <BehavioralProfileCard analysis={analysis.behavioral_profile_analysis} />
+      {analysis.behavioral_profile_analysis && (
+        <BehavioralProfileCard analysis={analysis.behavioral_profile_analysis} />
+      )}
 
-      {/* 16-Step Analysis */}
-      <Section title="Análise dos 16 Passos da Metodologia">
-        {analysis.phases.map((phase) => (
+      {/* 15-Step Analysis */}
+      <Section title="Análise das 15 Etapas da Metodologia">
+        {analysis.phases?.map((phase) => (
           <div key={phase.id} className="mb-6 last:mb-0">
             <StepAccordion steps={phase.steps} phaseTitle={phase.phase_title} />
           </div>
@@ -276,20 +285,20 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <h5 className="font-bold text-gray-900 dark:text-white mb-3">
-                ✅ Pontos de Controle Essenciais
+                Pontos de Controle Essenciais
               </h5>
               <div className="space-y-2">
-                {analysis.critical_observations.essential_control_points.map((point) => (
+                {analysis.critical_observations.essential_control_points?.map((point, index) => (
                   <div
-                    key={point.id}
+                    key={point.id || index}
                     className={`flex items-start gap-2 text-sm p-2 rounded ${
                       point.was_observed
                         ? 'bg-green-100 dark:bg-green-950 text-green-900 dark:text-green-100'
                         : 'bg-red-100 dark:bg-red-950 text-red-900 dark:text-red-100'
                     }`}
                   >
-                    <span className="mt-0.5">
-                      {point.was_observed ? '✓' : '✗'}
+                    <span className="mt-0.5 font-bold">
+                      {point.was_observed ? '[OK]' : '[X]'}
                     </span>
                     <span>{point.point_description}</span>
                   </div>
@@ -299,24 +308,30 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
 
             <div>
               <h5 className="font-bold text-gray-900 dark:text-white mb-3">
-                ❌ Checklist de Erros Fatais
+                Checklist de Erros Fatais
               </h5>
               <div className="space-y-2">
-                {analysis.critical_observations.fatal_errors.map((error) => (
-                  <div
-                    key={error.id}
-                    className={`flex items-start gap-2 text-sm p-2 rounded ${
-                      error.was_observed
-                        ? 'bg-red-100 dark:bg-red-950 text-red-900 dark:text-red-100'
-                        : 'bg-green-100 dark:bg-green-950 text-green-900 dark:text-green-100'
-                    }`}
-                  >
-                    <span className="mt-0.5">
-                      {error.was_observed ? '⚠️' : '✓'}
-                    </span>
-                    <span>{error.error_description}</span>
+                {analysis.critical_observations.fatal_errors?.length > 0 ? (
+                  analysis.critical_observations.fatal_errors.map((error, index) => (
+                    <div
+                      key={error.id || index}
+                      className={`flex items-start gap-2 text-sm p-2 rounded ${
+                        error.was_observed
+                          ? 'bg-red-100 dark:bg-red-950 text-red-900 dark:text-red-100'
+                          : 'bg-green-100 dark:bg-green-950 text-green-900 dark:text-green-100'
+                      }`}
+                    >
+                      <span className="mt-0.5 font-bold">
+                        {error.was_observed ? '[ERRO]' : '[OK]'}
+                      </span>
+                      <span>{error.error_description}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="bg-green-100 dark:bg-green-950 text-green-900 dark:text-green-100 p-3 rounded text-sm">
+                    ✅ Nenhum erro fatal identificado - Excelente desempenho!
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
@@ -325,48 +340,55 @@ export function RealizedSaleReport({ analysis }: RealizedSaleReportProps) {
 
       {/* Next Steps */}
       <Section title="Próximos Passos" variant={isLowQuality ? 'warning' : 'success'}>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {isLowQuality ? (
             <>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">1️⃣</span>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <strong>Imediato:</strong> Enviar follow-up usando os scripts de correção para
-                  reforçar o valor e reduzir ansiedade do paciente
-                </p>
+              <div className="flex items-start gap-4 border-l-4 border-orange-400 pl-4 py-2">
+                <span className="font-bold text-orange-600 dark:text-orange-400 text-lg min-w-[24px]">[1]</span>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white mb-1">Imediato</p>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Enviar follow-up usando os scripts de correção para
+                    reforçar o valor e reduzir ansiedade do paciente
+                  </p>
+                </div>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">2️⃣</span>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <strong>Esta semana:</strong> Revisar e praticar os scripts recomendados 10x
-                  antes da próxima consulta
-                </p>
+              <div className="flex items-start gap-4 border-l-4 border-orange-400 pl-4 py-2">
+                <span className="font-bold text-orange-600 dark:text-orange-400 text-lg min-w-[24px]">[2]</span>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white mb-1">Esta semana</p>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Revisar e praticar os scripts recomendados 10x antes da próxima consulta
+                  </p>
+                </div>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">3️⃣</span>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <strong>Próxima consulta:</strong> Aplicar a abordagem correta de construção de
-                  valor ao invés de pressão
-                </p>
+              <div className="flex items-start gap-4 border-l-4 border-orange-400 pl-4 py-2">
+                <span className="font-bold text-orange-600 dark:text-orange-400 text-lg min-w-[24px]">[3]</span>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white mb-1">Próxima consulta</p>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Aplicar a abordagem correta de construção de valor ao invés de pressão
+                  </p>
+                </div>
               </div>
             </>
           ) : (
             <>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">✅</span>
-                <p className="text-gray-700 dark:text-gray-300">
+              <div className="flex items-start gap-4 border-l-4 border-green-400 pl-4 py-2">
+                <span className="font-bold text-green-600 dark:text-green-400 text-lg">-</span>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   Continuar reforçando os pontos fortes identificados
                 </p>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">🔄</span>
-                <p className="text-gray-700 dark:text-gray-300">
+              <div className="flex items-start gap-4 border-l-4 border-green-400 pl-4 py-2">
+                <span className="font-bold text-green-600 dark:text-green-400 text-lg">-</span>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   Focar nos pontos de melhoria para aumentar ainda mais a taxa de conversão
                 </p>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">📈</span>
-                <p className="text-gray-700 dark:text-gray-300">
+              <div className="flex items-start gap-4 border-l-4 border-green-400 pl-4 py-2">
+                <span className="font-bold text-green-600 dark:text-green-400 text-lg">-</span>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   Aplicar as recomendações comportamentais para criar experiências ainda mais
                   personalizadas
                 </p>
